@@ -1,0 +1,97 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.shadow)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.bundles.jetty
+    implementation libs.jakarta.servlet.api
+
+    runtimeOnly libs.postgresql
+    implementation libs.hikaricp
+    implementation libs.liquibase.core
+    implementation libs.hibernate.core
+
+    implementation libs.bundles.jackson
+
+    implementation libs.bundles.jwt
+    implementation libs.jbcrypt
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+    annotationProcessor libs.lombok.mapstruct.binding
+
+    implementation libs.bundles.logging
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.bundles.testcontainers
+}
+
+
+shadowJar {
+    archiveClassifier = ''
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'ru.lottery.LotteryApplication'
+    }
+}
+
+jar {
+    enabled = false
+}
+
+artifacts {
+    archives shadowJar
+}
+
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        trimTrailingWhitespace()
+        endWithNewline()
+        removeUnusedImports()
+        importOrder('java', 'javax', 'jakarta', 'org', 'ru', '')
+
+        targetExclude('build/**', '.gradle/**', 'src/generated/**')
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    dependsOn spotlessApply
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('installGitHooks', Copy) {
+    from file('scripts/hook.sh')
+    into file('.git/hooks')
+    fileMode 0755
+}
+

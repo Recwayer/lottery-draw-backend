@@ -1,0 +1,3 @@
+CREATE SCHEMA IF NOT EXISTS migration;
+
+GRANT ALL PRIVILEGES ON SCHEMA migration TO admin;

@@ -1,0 +1,91 @@
+[versions]
+# Веб-сервер
+jetty = "11.0.26"
+servlet-api = "6.1.0"
+
+# База данных
+postgresql = "42.7.10"
+hikaricp = "7.0.2"
+liquibase = "5.0.2"
+hibernate = "7.3.1.Final"
+
+# JSON
+jackson = "2.21.2"
+
+# Безопасность
+jjwt = "0.13.0"
+jbcrypt = "0.4"
+
+# Маппинг и утилиты
+mapstruct = "1.6.3"
+lombok = "1.18.44"
+lombok-mapstruct-binding="0.2.0"
+
+# Логирование
+slf4j = "2.0.17"
+logback = "1.5.32"
+
+# Тестирование
+junit = "6.0.3"
+mockito = "5.23.0"
+assertj = "3.27.7"
+testcontainers = "1.21.4"
+
+# Плагины
+spotless-plugin = "8.4.0"
+shadow-plugin = "8.1.1"
+
+[libraries]
+# Веб-сервер
+jetty-server = { group = "org.eclipse.jetty", name = "jetty-server", version.ref = "jetty" }
+jetty-servlet = { group = "org.eclipse.jetty", name = "jetty-servlet", version.ref = "jetty" }
+jakarta-servlet-api = { group = "jakarta.servlet", name = "jakarta.servlet-api", version.ref = "servlet-api" }
+
+# База данных
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+hikaricp = { group = "com.zaxxer", name = "HikariCP", version.ref = "hikaricp" }
+liquibase-core = { group = "org.liquibase", name = "liquibase-core", version.ref = "liquibase" }
+hibernate-core = { group = "org.hibernate.orm", name = "hibernate-core", version.ref = "hibernate" }
+
+# JSON
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+jackson-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson" }
+
+# Безопасность
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwt" }
+jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
+
+# Маппинг
+mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
+
+# Lombok
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+lombok-mapstruct-binding = { group = "org.projectlombok", name = "lombok-mapstruct-binding", version.ref = "lombok-mapstruct-binding" }
+
+# Логирование
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+
+# Тестирование
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-junit = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+testcontainers-core = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
+testcontainers-junit = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless-plugin" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow-plugin" }
+
+[bundles]
+jetty = ["jetty-server", "jetty-servlet"]
+jackson = ["jackson-databind", "jackson-jsr310"]
+jwt = ["jjwt-api", "jjwt-impl", "jjwt-jackson"]
+logging = ["slf4j-api", "logback-classic"]
+testcontainers = ["testcontainers-core", "testcontainers-postgresql", "testcontainers-junit"]
+testing = ["junit-jupiter", "mockito-core", "mockito-junit", "assertj-core"]
