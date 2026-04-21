@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-lottery-type
+      author: Andrey Karpushin
+      changes:
+        - createTable:
+            tableName: lottery_type
+            columns:
+
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: created_at
+                  type: timestamp
+
+              - column:
+                  name: updated_at
+                  type: timestamp
+
+              - column:
+                  name: name
+                  type: varchar(63)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: pool_min
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: pool_max
+                  type: int
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: picks
+                  type: int
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: seed-lottery-type-classic
+      author: Andrey Karpushin
+      changes:
+        - insert:
+            tableName: lottery_type
+            columns:
+              - column:
+                  name: id
+                  value: 00000000-0000-0000-0000-00000000c649
+              - column:
+                  name: created_at
+                  valueComputed: now()
+              - column:
+                  name: updated_at
+                  valueComputed: now()
+              - column:
+                  name: name
+                  value: Classic 6/49
+              - column:
+                  name: pool_min
+                  valueNumeric: 1
+              - column:
+                  name: pool_max
+                  valueNumeric: 49
+              - column:
+                  name: picks
+                  valueNumeric: 6

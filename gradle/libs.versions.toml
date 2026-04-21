@@ -1,0 +1,85 @@
+[versions]
+# Micronaut
+micronaut-platform = "4.10.12"
+micronaut-gradle-plugin = "4.5.4"
+
+# База данных
+postgresql = "42.7.10"
+
+# Безопасность
+jbcrypt = "0.4"
+
+# Lombok
+lombok = "1.18.44"
+
+# Логирование
+logback = "1.5.32"
+
+# YAML
+snakeyaml = "2.4"
+
+# Тестирование
+junit = "6.0.3"
+mockito = "5.23.0"
+assertj = "3.27.7"
+testcontainers = "1.21.4"
+
+# Плагины
+spotless-plugin = "8.4.0"
+shadow-plugin = "8.3.6"
+
+[libraries]
+# Micronaut
+micronaut-http-server-netty = { group = "io.micronaut", name = "micronaut-http-server-netty" }
+micronaut-management = { group = "io.micronaut", name = "micronaut-management" }
+micronaut-http-validation = { group = "io.micronaut", name = "micronaut-http-validation" }
+micronaut-data-jdbc = { group = "io.micronaut.data", name = "micronaut-data-jdbc" }
+micronaut-data-processor = { group = "io.micronaut.data", name = "micronaut-data-processor" }
+micronaut-jdbc-hikari = { group = "io.micronaut.sql", name = "micronaut-jdbc-hikari" }
+micronaut-liquibase = { group = "io.micronaut.liquibase", name = "micronaut-liquibase" }
+micronaut-serde-jackson = { group = "io.micronaut.serde", name = "micronaut-serde-jackson" }
+micronaut-serde-processor = { group = "io.micronaut.serde", name = "micronaut-serde-processor" }
+micronaut-security-jwt = { group = "io.micronaut.security", name = "micronaut-security-jwt" }
+micronaut-security-annotations = { group = "io.micronaut.security", name = "micronaut-security-annotations" }
+micronaut-validation = { group = "io.micronaut.validation", name = "micronaut-validation" }
+micronaut-validation-processor = { group = "io.micronaut.validation", name = "micronaut-validation-processor" }
+
+# База данных
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+
+# Безопасность
+jbcrypt = { group = "org.mindrot", name = "jbcrypt", version.ref = "jbcrypt" }
+
+# Реактивные потоки
+reactor-core = { group = "io.projectreactor", name = "reactor-core" }
+
+# Lombok
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+
+# Логирование
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+
+# YAML
+snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+
+# Тестирование
+micronaut-test-junit5 = { group = "io.micronaut.test", name = "micronaut-test-junit5" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-junit = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockito" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+testcontainers-core = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "postgresql", version.ref = "testcontainers" }
+testcontainers-junit = { group = "org.testcontainers", name = "junit-jupiter", version.ref = "testcontainers" }
+reactor-test = { group = "io.projectreactor", name = "reactor-test" }
+micronaut-http-client = { group = "io.micronaut", name = "micronaut-http-client" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless-plugin" }
+micronaut-application = { id = "io.micronaut.application", version.ref = "micronaut-gradle-plugin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow-plugin" }
+
+[bundles]
+testcontainers = ["testcontainers-core", "testcontainers-postgresql", "testcontainers-junit"]
+testing = ["junit-jupiter", "mockito-core", "mockito-junit", "assertj-core", "micronaut-test-junit5", "reactor-test", "micronaut-http-client", "junit-platform-launcher"]

@@ -1,0 +1,26 @@
+micronaut:
+  application:
+    name: lottery-draw-backend
+  server:
+    port: ${PORT:8080}
+
+datasources:
+  default:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    dialect: POSTGRES
+    schema-generate: NONE
+    maximum-pool-size: ${DB_POOL_SIZE:10}
+    minimum-idle: ${DB_POOL_MIN_IDLE:2}
+    idle-timeout: ${DB_POOL_IDLE_TIMEOUT:30000}
+    connection-timeout: ${DB_CONNECTION_TIMEOUT:10000}
+    schema: ${DB_DEFAULT_SCHEMA:public}
+
+liquibase:
+  datasources:
+    default:
+      change-log: classpath:db/changelog-master.yaml
+      liquibase-schema: ${DB_MIGRATION_SCHEMA:migration}
+      default-schema: ${DB_DEFAULT_SCHEMA:public}

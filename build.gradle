@@ -1,0 +1,130 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.micronaut.application)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+micronaut {
+    version libs.versions.micronaut.platform.get()
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("ru.lottery.*")
+    }
+}
+
+application {
+    mainClass = 'ru.lottery.LotteryApplication'
+}
+
+dependencies {
+    implementation libs.micronaut.http.server.netty
+    implementation libs.micronaut.management
+    implementation libs.micronaut.data.jdbc
+    implementation libs.micronaut.jdbc.hikari
+    implementation libs.micronaut.liquibase
+    implementation libs.micronaut.serde.jackson
+    implementation libs.micronaut.security.jwt
+    implementation libs.micronaut.validation
+    implementation libs.jbcrypt
+    implementation libs.reactor.core
+
+    annotationProcessor libs.micronaut.data.processor
+    annotationProcessor libs.micronaut.http.validation
+    annotationProcessor libs.micronaut.serde.processor
+    annotationProcessor libs.micronaut.security.annotations
+    annotationProcessor libs.micronaut.validation.processor
+
+    runtimeOnly libs.postgresql
+    runtimeOnly libs.snakeyaml
+    runtimeOnly libs.logback.classic
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+
+    testImplementation libs.bundles.testing
+    testImplementation libs.bundles.testcontainers
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+    jvmArgs '-XX:+EnableDynamicAgentLoading'
+    systemProperty 'testcontainers.reuse.enable', 'true'
+}
+
+def jacocoExcludePatterns = [
+        'ru/lottery/LotteryApplication.class',
+        'ru/lottery/model/**',
+        'ru/lottery/web/dto/**',
+        'ru/lottery/service/event/**'
+]
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExcludePatterns)
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExcludePatterns)
+        }))
+    }
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+
+spotless {
+    java {
+        googleJavaFormat()
+        trimTrailingWhitespace()
+        endWithNewline()
+        removeUnusedImports()
+        importOrder('java', 'javax', 'jakarta', 'org', 'ru', '')
+
+        targetExclude('build/**', '.gradle/**', 'src/generated/**')
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    dependsOn spotlessApply, processResources
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('installGitHooks', Copy) {
+    from file('scripts/hook.sh')
+    into file('.git/hooks')
+    fileMode 0755
+}
