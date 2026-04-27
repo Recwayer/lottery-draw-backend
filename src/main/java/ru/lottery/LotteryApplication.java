@@ -12,8 +12,12 @@ public class LotteryApplication {
     Server server = new Server(port);
 
     ServletContextHandler context = new ServletContextHandler();
-    context.setContextPath("/");
     context.addServlet(new ServletHolder(factory.getHealthServlet()), "/health");
+    context.addServlet(new ServletHolder(factory.getAuthServlet()), "/api/auth/*");
+    context.addFilter(
+        ru.lottery.unit.filter.JwtAuthFilter.class,
+        "/api/*",
+        java.util.EnumSet.of(jakarta.servlet.DispatcherType.REQUEST));
     server.setHandler(context);
     server.start();
 

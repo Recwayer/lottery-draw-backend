@@ -3,14 +3,20 @@ package ru.lottery;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.mapstruct.factory.Mappers;
 
 import ru.lottery.config.DatabaseConfig;
 import ru.lottery.config.HibernateConfig;
 import ru.lottery.config.LiquibaseRunner;
+import ru.lottery.mapper.UserMapper;
 import ru.lottery.repository.DrawRepository;
 import ru.lottery.repository.DrawResultRepository;
 import ru.lottery.repository.TicketRepository;
 import ru.lottery.repository.UserRepository;
+import ru.lottery.unit.controller.AuthServlet;
+import ru.lottery.unit.filter.JwtAuthFilter;
+import ru.lottery.unit.service.UserService;
+import ru.lottery.unit.service.UserServiceImpl;
 import ru.lottery.web.HealthServlet;
 
 import lombok.Getter;
@@ -21,6 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ApplicationFactory {
   private final DataSource dataSource;
   private final SessionFactory sessionFactory;
+  private final UserService userService;
+  private final AuthServlet authServlet;
+  private final JwtAuthFilter jwtAuthFilter;
 
   private final UserRepository userRepository;
   private final DrawRepository drawRepository;
@@ -48,6 +57,9 @@ public class ApplicationFactory {
     this.drawResultRepository = new DrawResultRepository(sessionFactory);
 
     this.healthServlet = new HealthServlet();
+    this.userService = new UserServiceImpl(userRepository, Mappers.getMapper(UserMapper.class));
+    this.authServlet = new AuthServlet(userService);
+    this.jwtAuthFilter = new JwtAuthFilter();
 
     log.info("Application started successfully");
   }
