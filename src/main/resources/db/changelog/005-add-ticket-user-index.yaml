@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-ticket-user-index
+      author: codex
+      changes:
+        - createIndex:
+            tableName: ticket
+            indexName: idx_ticket_user_id
+            columns:
+              - column:
+                  name: user_id

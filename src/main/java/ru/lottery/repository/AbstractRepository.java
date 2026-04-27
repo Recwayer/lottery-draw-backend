@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.hibernate.SessionFactory;
 
-import ru.lottery.exception.NotFoundException;
 import ru.lottery.util.HibernateExecutor;
 
 import lombok.RequiredArgsConstructor;
@@ -37,10 +36,7 @@ public abstract class AbstractRepository<T> {
   public Optional<T> findById(UUID id) {
     return Optional.ofNullable(
         HibernateExecutor.executeWithoutTransaction(
-            sessionFactory,
-            session ->
-                Optional.ofNullable(session.find(entityClass, id))
-                    .orElseThrow(NotFoundException::new)));
+            sessionFactory, session -> session.find(entityClass, id)));
   }
 
   public void delete(T entity) {

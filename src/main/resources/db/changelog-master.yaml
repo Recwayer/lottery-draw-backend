@@ -1,3 +1,4 @@
 databaseChangeLog:
+  - objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
   - includeAll:
       path: db/changelog

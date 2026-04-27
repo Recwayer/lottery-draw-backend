@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 
 import ru.lottery.model.enums.Role;
 
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "\"user\"")
 public class User extends BaseEntity {
 
   @Column(nullable = false, unique = true)
@@ -27,4 +29,12 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private Role role;
+
+  public static User create(String email, String passwordHash, Role role) {
+    User user = new User();
+    user.setEmail(email);
+    user.setPasswordHash(passwordHash);
+    user.setRole(role);
+    return user;
+  }
 }

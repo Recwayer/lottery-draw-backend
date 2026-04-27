@@ -28,4 +28,12 @@ public class Draw extends BaseEntity {
 
   @Column(name = "draw_date")
   private LocalDateTime drawDate;
+
+  public static Draw create(String name, DrawStatus status, LocalDateTime drawDate) {
+    Draw draw = new Draw();
+    draw.setName(name);
+    draw.setStatus(status);
+    draw.setDrawDate(drawDate);
+    return draw;
+  }
 }

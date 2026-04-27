@@ -28,4 +28,13 @@ public class Ticket extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private TicketStatus status;
+
+  public static Ticket create(User user, Draw draw, String numbers, TicketStatus status) {
+    Ticket ticket = new Ticket();
+    ticket.setUser(user);
+    ticket.setDraw(draw);
+    ticket.setNumbers(numbers);
+    ticket.setStatus(status);
+    return ticket;
+  }
 }

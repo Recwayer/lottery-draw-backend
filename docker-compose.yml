@@ -38,6 +38,9 @@ services:
       HIBERNATE_FORMAT_SQL: true
       HIBERNATE_DDL_AUTO_STRATEGY: validate
       HIBERNATE_DEFAULT_SCHEMA: public
+
+      JWT_SECRET: local-development-jwt-secret-please-change
+      JWT_EXPIRES_MINUTES: 60
     ports:
       - "8080:8080"
     depends_on:

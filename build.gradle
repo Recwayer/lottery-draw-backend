@@ -1,17 +1,29 @@
 plugins {
     id 'java'
+    id 'application'
     id 'jacoco'
     alias(libs.plugins.spotless)
     alias(libs.plugins.shadow)
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+jacoco {
+    toolVersion = '0.8.14'
+}
+
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass = 'ru.lottery.LotteryApplication'
 }
 
 dependencies {
@@ -57,7 +69,6 @@ jar {
 artifacts {
     archives shadowJar
 }
-
 
 test {
     useJUnitPlatform()

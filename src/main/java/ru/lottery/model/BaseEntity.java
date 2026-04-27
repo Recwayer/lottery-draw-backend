@@ -32,7 +32,9 @@ public abstract class BaseEntity {
     if (id == null) {
       id = UUID.randomUUID();
     }
-    createdAt = LocalDateTime.now();
+    if (createdAt == null) {
+      createdAt = LocalDateTime.now();
+    }
     updatedAt = LocalDateTime.now();
   }
 
