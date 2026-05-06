@@ -3,6 +3,24 @@ micronaut:
     name: lottery-draw-backend
   server:
     port: ${PORT:8080}
+  security:
+    authentication: bearer
+    token:
+      authentication: bearer
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: "${JWT_SECRET:pleaseChangeThisSecretForProductionUseOnly}"
+              jws-algorithm: HS256
+        generator:
+          access-token:
+            expiration: ${JWT_ACCESS_TTL_SECONDS:900}
+          refresh-token:
+            secret: "${JWT_REFRESH_SECRET:pleaseChangeThisRefreshSecretForProd}"
+
+jwt:
+  refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:604800}
 
 datasources:
   default:

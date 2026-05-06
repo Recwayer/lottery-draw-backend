@@ -32,6 +32,13 @@ services:
 
       DB_DEFAULT_SCHEMA: public
       DB_MIGRATION_SCHEMA: migration
+
+      JWT_SECRET: pleaseChangeThisSecretAtLeast32CharactersLong!
+      JWT_REFRESH_SECRET: pleaseChangeThisRefreshSecretAtLeast32Chars!
+      JWT_ACCESS_TTL_SECONDS: 900
+      JWT_REFRESH_TTL_SECONDS: 604800
+
+      MICRONAUT_ENVIRONMENTS: docker
     ports:
       - "8080:8080"
     depends_on:
