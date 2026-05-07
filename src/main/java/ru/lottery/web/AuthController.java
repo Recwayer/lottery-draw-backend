@@ -4,10 +4,7 @@ import java.security.Principal;
 
 import jakarta.validation.Valid;
 
-import ru.lottery.aop.RecordUserEvent;
-import ru.lottery.aop.UserSource;
 import ru.lottery.model.User;
-import ru.lottery.model.enums.UserEventType;
 import ru.lottery.repository.RefreshTokenRepository;
 import ru.lottery.service.UserService;
 import ru.lottery.web.dto.LogoutRequest;
@@ -42,10 +39,6 @@ public class AuthController {
 
   @Post(uri = "/logout", consumes = MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
-  @RecordUserEvent(
-      value = UserEventType.LOGOUT,
-      userFrom = UserSource.NAMED_PRINCIPAL_ARG,
-      userArg = "principal")
   public HttpResponse<Void> logout(@Body @Valid LogoutRequest request, Principal principal) {
     String storedKey =
         refreshTokenValidator

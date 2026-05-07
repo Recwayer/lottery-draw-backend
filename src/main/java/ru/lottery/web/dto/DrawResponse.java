@@ -3,15 +3,25 @@ package ru.lottery.web.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import ru.lottery.model.Draw;
+import ru.lottery.model.enums.DrawStatus;
 
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
-public record CreateDrawRequest(
-    @NotBlank @Size(max = 255) String name,
-    @NotNull @Future LocalDateTime drawDate,
-    @NotNull UUID lotteryTypeId) {}
+public record DrawResponse(
+    UUID id,
+    String name,
+    DrawStatus status,
+    LocalDateTime drawDate,
+    LotteryTypeResponse lotteryType) {
+
+  public static DrawResponse from(Draw draw) {
+    return new DrawResponse(
+        draw.getId(),
+        draw.getName(),
+        draw.getStatus(),
+        draw.getDrawDate(),
+        LotteryTypeResponse.from(draw.getLotteryType()));
+  }
+}

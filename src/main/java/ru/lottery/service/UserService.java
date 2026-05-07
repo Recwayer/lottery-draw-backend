@@ -4,11 +4,8 @@ import java.util.Optional;
 
 import jakarta.inject.Singleton;
 
-import ru.lottery.aop.RecordUserEvent;
-import ru.lottery.aop.UserSource;
 import ru.lottery.model.User;
 import ru.lottery.model.enums.Role;
-import ru.lottery.model.enums.UserEventType;
 import ru.lottery.repository.UserRepository;
 import ru.lottery.security.PasswordHasher;
 
@@ -23,7 +20,6 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordHasher passwordHasher;
 
-  @RecordUserEvent(value = UserEventType.REGISTER, userFrom = UserSource.RETURN_VALUE)
   public User register(String email, String rawPassword) {
     if (userRepository.existsByEmail(email)) {
       throw new HttpStatusException(HttpStatus.CONFLICT, "User with this email already exists");
