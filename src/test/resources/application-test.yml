@@ -1,23 +1,22 @@
 micronaut:
   application:
-    name: lottery-draw-backend
+    name: lottery-draw-backend-test
   server:
-    port: ${PORT:8080}
+    port: -1
   security:
     authentication: bearer
     token:
-      authentication: bearer
       jwt:
         signatures:
           secret:
             generator:
-              secret: "${JWT_SECRET:pleaseChangeThisSecretForProductionUseOnly}"
+              secret: pleaseChangeThisSecretAtLeast32CharactersLong!
               jws-algorithm: HS256
         generator:
           access-token:
-            expiration: ${JWT_ACCESS_TTL_SECONDS:900}
+            expiration: 900
           refresh-token:
-            secret: "${JWT_REFRESH_SECRET:pleaseChangeThisRefreshSecretForProd}"
+            secret: pleaseChangeThisRefreshSecretAtLeast32Chars!
     intercept-url-map:
       - pattern: /health
         access:
@@ -33,36 +32,27 @@ micronaut:
           - isAnonymous()
 
 jwt:
-  refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:604800}
+  refresh-ttl-seconds: 604800
 
 datasources:
   default:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     dialect: POSTGRES
     schema-generate: NONE
-    maximum-pool-size: ${DB_POOL_SIZE:10}
-    minimum-idle: ${DB_POOL_MIN_IDLE:2}
-    idle-timeout: ${DB_POOL_IDLE_TIMEOUT:30000}
-    connection-timeout: ${DB_CONNECTION_TIMEOUT:10000}
-    schema: ${DB_DEFAULT_SCHEMA:public}
+    maximum-pool-size: 5
+    minimum-idle: 1
+    schema: public
 
 liquibase:
   datasources:
     default:
       change-log: classpath:db/changelog-master.yaml
-      liquibase-schema: ${DB_MIGRATION_SCHEMA:migration}
-      default-schema: ${DB_DEFAULT_SCHEMA:public}
+      liquibase-schema: public
+      default-schema: public
 
 endpoints:
   health:
-    enabled: true
-    sensitive: false
-    details-visible: ANONYMOUS
-    jdbc:
-      enabled: true
+    enabled: false
 
 jackson:
   serialization:
