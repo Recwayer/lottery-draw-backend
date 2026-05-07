@@ -18,6 +18,19 @@ micronaut:
             expiration: ${JWT_ACCESS_TTL_SECONDS:900}
           refresh-token:
             secret: "${JWT_REFRESH_SECRET:pleaseChangeThisRefreshSecretForProd}"
+    intercept-url-map:
+      - pattern: /health
+        access:
+          - isAnonymous()
+      - pattern: /register
+        access:
+          - isAnonymous()
+      - pattern: /login
+        access:
+          - isAnonymous()
+      - pattern: /oauth/access_token
+        access:
+          - isAnonymous()
 
 jwt:
   refresh-ttl-seconds: ${JWT_REFRESH_TTL_SECONDS:604800}
@@ -42,3 +55,15 @@ liquibase:
       change-log: classpath:db/changelog-master.yaml
       liquibase-schema: ${DB_MIGRATION_SCHEMA:migration}
       default-schema: ${DB_DEFAULT_SCHEMA:public}
+
+endpoints:
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+    jdbc:
+      enabled: true
+
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false

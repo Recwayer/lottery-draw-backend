@@ -16,11 +16,11 @@ import io.micronaut.aop.Around;
 @Around
 public @interface RecordUserEvent {
 
-    UserEventType value();
+  UserEventType value();
 
-    UserSource userFrom() default UserSource.RETURN_VALUE;
+  UserSource userFrom() default UserSource.RETURN_VALUE;
 
-    String userArg() default "";
+  String userArg() default "";
 
-    String payloadArg() default "";
+  String payloadArg() default "";
 }

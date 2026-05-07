@@ -21,14 +21,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserHistoryController {
 
-    private final UserEventQueryService queryService;
+  private final UserEventQueryService queryService;
 
-    @Get("/me/history")
-    public Page<UserEventResponse> history(
-            Principal principal,
-            @QueryValue(defaultValue = "0") int page,
-            @QueryValue(defaultValue = "20") int size,
-            @Nullable @QueryValue("type") List<UserEventType> types) {
-        return queryService.history(principal.getName(), page, size, types);
-    }
+  @Get("/me/history")
+  public Page<UserEventResponse> history(
+      Principal principal,
+      @QueryValue(defaultValue = "0") int page,
+      @QueryValue(defaultValue = "20") int size,
+      @Nullable @QueryValue("type") List<UserEventType> types) {
+    return queryService.history(principal.getName(), page, size, types);
+  }
 }

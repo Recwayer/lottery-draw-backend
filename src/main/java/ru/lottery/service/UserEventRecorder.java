@@ -18,51 +18,51 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserEventRecorder {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserEventRecorder.class);
+  private static final Logger LOG = LoggerFactory.getLogger(UserEventRecorder.class);
 
-    private final UserEventRepository userEventRepository;
-    private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
+  private final UserEventRepository userEventRepository;
+  private final UserRepository userRepository;
+  private final ObjectMapper objectMapper;
 
-    public UserEvent record(User user, UserEventType type, Object payload) {
-        if (user == null) {
-            LOG.warn("Skip recording {} event: user is null", type);
-            return null;
-        }
-        UserEvent event = new UserEvent();
-        event.setUser(user);
-        event.setType(type);
-        event.setPayload(serialize(payload));
-        return userEventRepository.save(event);
+  public UserEvent record(User user, UserEventType type, Object payload) {
+    if (user == null) {
+      LOG.warn("Skip recording {} event: user is null", type);
+      return null;
     }
+    UserEvent event = new UserEvent();
+    event.setUser(user);
+    event.setType(type);
+    event.setPayload(serialize(payload));
+    return userEventRepository.save(event);
+  }
 
-    public UserEvent recordByEmail(String email, UserEventType type, Object payload) {
-        if (email == null) {
-            LOG.warn("Skip recording {} event: email is null", type);
-            return null;
-        }
-        return userRepository
-                .findByEmail(email)
-                .map(user -> record(user, type, payload))
-                .orElseGet(
-                        () -> {
-                            LOG.warn("Skip recording {} event: user not found by email={}", type, email);
-                            return null;
-                        });
+  public UserEvent recordByEmail(String email, UserEventType type, Object payload) {
+    if (email == null) {
+      LOG.warn("Skip recording {} event: email is null", type);
+      return null;
     }
+    return userRepository
+        .findByEmail(email)
+        .map(user -> record(user, type, payload))
+        .orElseGet(
+            () -> {
+              LOG.warn("Skip recording {} event: user not found by email={}", type, email);
+              return null;
+            });
+  }
 
-    private String serialize(Object payload) {
-        if (payload == null) {
-            return null;
-        }
-        if (payload instanceof CharSequence cs) {
-            return cs.toString();
-        }
-        try {
-            return objectMapper.writeValueAsString(payload);
-        } catch (Exception e) {
-            LOG.warn("Failed to serialize event payload of type {}", payload.getClass(), e);
-            return null;
-        }
+  private String serialize(Object payload) {
+    if (payload == null) {
+      return null;
     }
+    if (payload instanceof CharSequence cs) {
+      return cs.toString();
+    }
+    try {
+      return objectMapper.writeValueAsString(payload);
+    } catch (Exception e) {
+      LOG.warn("Failed to serialize event payload of type {}", payload.getClass(), e);
+      return null;
+    }
+  }
 }
