@@ -25,17 +25,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationController {
 
-    private final NotificationService notificationService;
-    private final UserEventQueryService queryService;
+  private final NotificationService notificationService;
+  private final UserEventQueryService queryService;
 
-    @Get(uri = "/notifications/stream", produces = MediaType.TEXT_EVENT_STREAM)
-    public Publisher<Event<NotificationPayload>> stream(Principal principal) {
-        return notificationService.stream(principal.getName()).map(Event::of);
-    }
+  @Get(uri = "/notifications/stream", produces = MediaType.TEXT_EVENT_STREAM)
+  public Publisher<Event<NotificationPayload>> stream(Principal principal) {
+    return notificationService.stream(principal.getName()).map(Event::of);
+  }
 
-    @Get("/notifications/recent")
-    public List<UserEventResponse> recent(
-            Principal principal, @QueryValue(defaultValue = "20") int limit) {
-        return queryService.recent(principal.getName(), UserEventType.NOTIFICATION_SENT, limit);
-    }
+  @Get("/notifications/recent")
+  public List<UserEventResponse> recent(
+      Principal principal, @QueryValue(defaultValue = "20") int limit) {
+    return queryService.recent(principal.getName(), UserEventType.NOTIFICATION_SENT, limit);
+  }
 }

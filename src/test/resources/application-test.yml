@@ -1,0 +1,59 @@
+micronaut:
+  application:
+    name: lottery-draw-backend-test
+  server:
+    port: -1
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: pleaseChangeThisSecretAtLeast32CharactersLong!
+              jws-algorithm: HS256
+        generator:
+          access-token:
+            expiration: 900
+          refresh-token:
+            secret: pleaseChangeThisRefreshSecretAtLeast32Chars!
+    intercept-url-map:
+      - pattern: /health
+        access:
+          - isAnonymous()
+      - pattern: /register
+        access:
+          - isAnonymous()
+      - pattern: /login
+        access:
+          - isAnonymous()
+      - pattern: /oauth/access_token
+        access:
+          - isAnonymous()
+
+jwt:
+  refresh-ttl-seconds: 604800
+
+datasources:
+  default:
+    driver-class-name: org.postgresql.Driver
+    dialect: POSTGRES
+    schema-generate: NONE
+    maximum-pool-size: 5
+    minimum-idle: 1
+    schema: public
+
+liquibase:
+  datasources:
+    default:
+      change-log: classpath:db/changelog-master.yaml
+      liquibase-schema: public
+      default-schema: public
+
+endpoints:
+  health:
+    enabled: false
+
+jackson:
+  serialization:
+    writeDatesAsTimestamps: false

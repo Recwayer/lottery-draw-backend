@@ -9,4 +9,4 @@ import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
 public record UserEventResponse(
-        UUID id, UserEventType type, Object payload, LocalDateTime createdAt) {}
+    UUID id, UserEventType type, Object payload, LocalDateTime createdAt) {}

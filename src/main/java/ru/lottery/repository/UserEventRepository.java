@@ -17,14 +17,14 @@ import io.micronaut.data.repository.CrudRepository;
 @JdbcRepository(dialect = Dialect.POSTGRES)
 public interface UserEventRepository extends CrudRepository<UserEvent, UUID> {
 
-    @Join(value = "user", type = Join.Type.FETCH)
-    Page<UserEvent> findByUserId(UUID userId, Pageable pageable);
+  @Join(value = "user", type = Join.Type.FETCH)
+  Page<UserEvent> findByUserId(UUID userId, Pageable pageable);
 
-    @Join(value = "user", type = Join.Type.FETCH)
-    Page<UserEvent> findByUserIdAndTypeIn(
-            UUID userId, Collection<UserEventType> types, Pageable pageable);
+  @Join(value = "user", type = Join.Type.FETCH)
+  Page<UserEvent> findByUserIdAndTypeIn(
+      UUID userId, Collection<UserEventType> types, Pageable pageable);
 
-    @Join(value = "user", type = Join.Type.FETCH)
-    List<UserEvent> findByUserIdAndTypeOrderByCreatedAtDesc(
-            UUID userId, UserEventType type, Pageable pageable);
+  @Join(value = "user", type = Join.Type.FETCH)
+  List<UserEvent> findByUserIdAndTypeOrderByCreatedAtDesc(
+      UUID userId, UserEventType type, Pageable pageable);
 }
